@@ -3,12 +3,11 @@
     style="display: flex; flex-direction: column; justify-content: space-between; min-height: 100vh; max-width: 100%"
   >
     <!-- <img src="./assets/logo.png"> -->
-    <the-header></the-header>
+    <the-header :user="globalUser"></the-header>
 
     <router-view/>
 
-    <the-footer></the-footer>
-
+    <the-footer v-if="!globalUser"></the-footer>
     <!-- <confirm-dialog></confirm-dialog> -->
   </div>
 </template>
@@ -17,18 +16,16 @@
 import TheHeader from './components/TheHeader.vue'
 import TheFooter from './components/TheFooter.vue'
 import ConfirmDialog from './components/dialogs/ConfirmDialog.vue'
+import globalMixins from './mixins/globalMixins'
 import { bus } from './main'
 
 export default {
   name: 'App',
   components: { TheHeader, TheFooter, ConfirmDialog },
+  mixins: [globalMixins],
   data () {
     return {
-      user: null
     }
-  },
-  computed: {
-    getUser () { return this.user }
   },
   created () {
     bus.$on('onLogin', function (user) {
@@ -36,14 +33,17 @@ export default {
       if (valitor.email !== user.email || valitor.password !== user.password) {
         return
       }
-      JSON.parse(localStorage.setItem('user', JSON.stringify(user)))
+      localStorage.setItem('user', JSON.stringify(user))
+      window.location = '/'
     })
     bus.$on('onRegister', function (user) {
       localStorage.setItem('userRegister', JSON.stringify(user))
-      this.$router.push({name: 'Index'})
+      localStorage.setItem('user', JSON.stringify(user))
+      window.location = '/login'
     })
     bus.$on('onLogout', function () {
       localStorage.removeItem('user')
+      window.location = '/login'
     })
   }
 }

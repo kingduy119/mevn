@@ -37,7 +37,7 @@ export default {
   },
   created () {
     if (!this.user) {
-      return this.$router.push({name: 'Login'})
+      return this.$router.push('/login')
     }
   },
   methods: {

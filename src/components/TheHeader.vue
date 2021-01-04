@@ -13,7 +13,7 @@
             </button>
             <div class="menu collapse navbar-collapse" id="navbarMenu">
                 <!--  -->
-                <ul v-if="!user" class="navbar-nav mr-auto">
+                <ul v-if="user" class="navbar-nav mr-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="/#/">
                             <div>Projects</div>
@@ -73,14 +73,15 @@
 
 <script>
 import LanguageSelect from './LanguageSelect.vue'
-import globalMixins from '../mixins/globalMixins'
 import { bus } from '../main'
 
 export default {
   components: {
     LanguageSelect
   },
-  mixins: [globalMixins],
+  props: {
+    user: {type: Object, default: null}
+  },
   data () {
     return {
       views: ['Projects', 'Templates']
@@ -89,7 +90,6 @@ export default {
   methods: {
     logoutUser () {
       bus.$emit('onLogout')
-      this.$router.push({name: 'Login'})
     }
   }
 }
