@@ -1,13 +1,10 @@
 <template>
 <main class="pt-4 page-content-container">
 <div class="login-container">
-           
 <div class="container">
     <div class="card main-card">
         <div class="card-header">Login</div>
-
         <div class="card-body">
-            <!-- LOGIN -->
             <login-form></login-form>
         </div>
     </div>
@@ -18,11 +15,18 @@
 </template>
 
 <script>
-import LoginForm from '../components/LoginForm.vue';
+import LoginForm from '../components/LoginForm.vue'
+import globalMixins from '../mixins/globalMixins'
 
 export default {
-    components: {
-        LoginForm
-    },
+  components: {
+    LoginForm
+  },
+  mixins: [globalMixins],
+  created () {
+    if (this.user) {
+      return this.$router.push({name: 'Index'})
+    }
+  }
 }
 </script>
